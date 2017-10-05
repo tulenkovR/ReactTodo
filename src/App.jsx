@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Todo from "./components/Todo";
 import todos from "./todos.js";
 import Form from "./components/Form";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 
 class App extends React.Component {
   constructor(props) {
@@ -52,11 +53,6 @@ class App extends React.Component {
       .catch(this.handleError);
   }
 
-  // nextId() {
-  //   this._nextId = this._nextId || 4;
-  //   return this._nextId++;
-  // }
-
   handleAdd(title) {
     axios
       .post("api/todos", { title })
@@ -92,7 +88,15 @@ class App extends React.Component {
       <main>
         <Header title={this.props.title} todos={this.state.todos} />
 
-        <section className="todo-list">
+        <ReactCSSTransitionGroup
+        component="section"
+        className="todo-list"
+        transitionName="slide"
+        transitionAppear={true}
+        transitionAppearTimeout={500}
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={500}
+        >
           {this.state.todos.map(todo => (
             <Todo
               key={todo.id}
@@ -104,7 +108,7 @@ class App extends React.Component {
               onEdit={this.handleEdit}
             />
           ))}
-        </section>
+        </ReactCSSTransitionGroup>
         <Form onAdd={this.handleAdd} />
       </main>
     );
